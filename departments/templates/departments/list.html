@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>🏢 部門列表</h3>
+    {% if user.is_superuser %}
+        <a href="{% url 'department_create' %}" class="btn btn-primary">➕ 新增部門</a>
+    {% endif %}
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <table class="table table-striped table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>部門 ID</th>
+                    <th>部門名稱</th>
+                    {% if user.is_superuser %}
+                        <th class="text-end">管理操作</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for dept in departments %}
+                <tr>
+                    <td>#{{ dept.id }}</td>
+                    <td><strong>{{ dept.name }}</strong></td>
+                    
+                    {% if user.is_superuser %}
+                    <td class="text-end">
+                        <a href="{% url 'department_update' dept.id %}" class="btn btn-sm btn-outline-secondary">編輯</a>
+                        <a href="{% url 'department_delete' dept.id %}" class="btn btn-sm btn-outline-danger" onclick="return confirm('確定要刪除「{{ dept.name }}」嗎？這可能會影響關聯的設備資料喔！');">刪除</a>
+                    </td>
+                    {% endif %}
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="{% if user.is_superuser %}3{% else %}2{% endif %}" class="text-center text-muted py-4">目前系統內無任何部門資料</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

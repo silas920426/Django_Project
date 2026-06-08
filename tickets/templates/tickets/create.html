@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">新增報修單</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label class="form-label">選擇故障設備：</label>
+                        <select name="equipment" class="form-select" required>
+                            <option value="">-- 請選擇設備 --</option>
+                            {% for eq in equipments %}
+                                <option value="{{ eq.id }}">{{ eq.name }} ({{ eq.location }})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">問題簡述 (Title)：</label>
+                        <input type="text" name="title" class="form-control" placeholder="例如：印表機卡紙" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">詳細狀況描述：</label>
+                        <textarea name="description" class="form-control" rows="4" placeholder="請盡量詳細描述故障情形..." required></textarea>
+                    </div>
+
+                    <div class="d-flex justify-content-end">
+                        <a href="/tickets/" class="btn btn-secondary me-2">取消</a>
+                        <button type="submit" class="btn btn-success">送出報修</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
