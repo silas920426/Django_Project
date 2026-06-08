@@ -120,6 +120,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/6.0/howto/static-files/
+
 STATIC_URL = 'static/'
-LOGIN_REDIRECT_URL = '/'
-LOGOUT_REDIRECT_URL = '/users/login/'
+
+# 🔥 修改以下的登入/登出跳轉設定：
+LOGIN_REDIRECT_URL = '/dashboard/'   # 登入成功後，跳轉到 Dashboard
+LOGOUT_REDIRECT_URL = '/'            # 登出後，跳回根目錄 (也就是登入頁)
+LOGIN_URL = '/'                      # 若未登入者企圖偷連其他網頁，會被強制踢回根目錄

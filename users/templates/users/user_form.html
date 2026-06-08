@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card shadow-sm mt-4">
+            <div class="card-header bg-dark text-white">
+                <h5 class="mb-0">📝 編輯個人資料：{{ user_obj.username }}</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    {% csrf_token %}
+                    
+                    {% for field in form %}
+                    <div class="mb-3">
+                        {% if field.field.widget.input_type == 'checkbox' %}
+                            <div class="form-check form-switch p-3 bg-light rounded border">
+                                {{ field }}
+                                <label class="form-check-label fw-bold ms-2" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            </div>
+                        {% else %}
+                            <label class="form-label fw-bold text-muted">{{ field.label }}</label>
+                            {{ field }}
+                        {% endif %}
+                        
+                        {% for error in field.errors %}
+                            <div class="text-danger small mt-1">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+                    
+                    <hr>
+                    <div class="d-flex justify-content-end gap-2">
+                        <a href="{% url 'contact_list' %}" class="btn btn-outline-secondary">取消返回</a>
+                        <button type="submit" class="btn btn-success">儲存變更</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

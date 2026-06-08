@@ -6,6 +6,14 @@
     <a href="{% url 'ticket_create' %}" class="btn btn-primary">➕ 新增報修單</a>
 </div>
 
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
 <div class="card shadow-sm">
     <div class="card-body">
         <table class="table table-striped table-hover align-middle">
@@ -38,9 +46,14 @@
                     </td>
                     <td>{{ ticket.created_at|date:"Y/m/d H:i" }}</td>
                     <td class="text-center">
-                        <a href="{% url 'ticket_detail' ticket.id %}" class="btn btn-sm btn-info text-white me-1">🔍 查看詳細</a>
                         
-                        <a href="{% url 'ticket_delete' ticket.id %}" class="btn btn-sm btn-outline-danger" onclick="return confirm('確定要刪除這張報修單嗎？');">刪除</a>
+                        {% if request.user.is_superuser or request.user.profile.department.name == '報修部' %}
+                            <a href="{% url 'ticket_detail' ticket.id %}" class="btn btn-sm btn-info text-white me-1">🔍 查看詳細 / 處理</a>
+                            <a href="{% url 'ticket_delete' ticket.id %}" class="btn btn-sm btn-outline-danger" onclick="return confirm('確定要刪除這張報修單嗎？');">刪除</a>
+                        {% else %}
+                            <span class="text-muted small">審核與處理中</span>
+                        {% endif %}
+                        
                     </td>
                 </tr>
                 {% empty %}

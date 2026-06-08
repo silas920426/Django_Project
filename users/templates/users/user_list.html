@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>📖 員工通訊錄與個人資料</h3>
+</div>
+
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <table class="table table-striped table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>帳號名稱</th>
+                    <th>真實姓名</th>
+                    <th>所屬部門</th>
+                    <th>電子郵件</th>
+                    <th>聯絡電話</th>
+                    <th class="text-end">管理操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for u in users %}
+                <tr>
+                    <td>
+                        <strong>{{ u.username }}</strong>
+                        {% if u == request.user %} <span class="badge bg-success ms-1">我自己</span> {% endif %}
+                    </td>
+                    <td>{{ u.last_name }}{{ u.first_name }}</td>
+                    <td>{{ u.profile.department.name|default:"<span class='text-muted'>未指派</span>" }}</td>
+                    <td>{{ u.email|default:"--" }}</td>
+                    <td><code>{{ u.profile.phone|default:"--" }}</code></td>
+                    
+                    <td class="text-end">
+                        {% if request.user.is_superuser or request.user == u %}
+                            <a href="{% url 'contact_update' u.id %}" class="btn btn-sm btn-info text-white">✏️ 編輯資料</a>
+                        {% endif %}
+                        
+                        {% if request.user.is_superuser and request.user != u %}
+                            <a href="{% url 'contact_delete' u.id %}" class="btn btn-sm btn-outline-danger" onclick="return confirm('確定要刪除聯絡人 {{ u.username }} 嗎？');">刪除</a>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center text-muted py-4">目前系統內無其他聯絡人資料</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

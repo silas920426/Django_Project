@@ -1,25 +1,20 @@
 """
 URL configuration for Django_Project project.
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/6.0/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path , include
+from django.urls import path, include
+from django.contrib.auth import views as auth_views  # 👈 新增引入這行
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('dashboard.urls')),
+    
+    # 🔥 1. 將預設根目錄直接綁定為登入頁面
+    # redirect_authenticated_user=True 代表如果已經登入過，會自動跳轉，不用再登入一次
+    path('', auth_views.LoginView.as_view(template_name='users/login.html', redirect_authenticated_user=True), name='login'),
+    
+    # 🔥 2. 將原本的首頁 (Dashboard) 移到獨立的路徑
+    path('dashboard/', include('dashboard.urls')),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('departments/', include('departments.urls')),
     path('equipments/', include('equipments.urls')),
     path('tickets/', include('tickets.urls')),
