@@ -7,7 +7,7 @@ class EquipmentForm(forms.ModelForm):
         fields = ['name', 'serial_number', 'department', 'location', 'status']
         labels = {
             'name': '設備名稱',
-            'serial_number': '設備序號/資產編號',
+            'serial_number': '設備序號',
             'department': '所屬部門',
             'location': '放置位置',
             'status': '設備狀態',

@@ -127,5 +127,5 @@ STATIC_URL = 'static/'
 
 # 🔥 修改以下的登入/登出跳轉設定：
 LOGIN_REDIRECT_URL = '/dashboard/'   # 登入成功後，跳轉到 Dashboard
-LOGOUT_REDIRECT_URL = '/'            # 登出後，跳回根目錄 (也就是登入頁)
-LOGIN_URL = '/'                      # 若未登入者企圖偷連其他網頁，會被強制踢回根目錄
+LOGOUT_REDIRECT_URL = '/'     # 登出後，跳回登入頁
+LOGIN_URL = '/'                # 若未登入者企圖偷連其他網頁，會被強制踢回登入頁

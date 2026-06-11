@@ -6,19 +6,19 @@ from .models import RepairTicket
 from .forms import RepairTicketForm
 from equipments.models import Equipment
 
-# 🔥 權限判斷小工具：檢查是否為「超級管理員」或所屬部門為「報修部」
+# 🔥 權限判斷小工具：檢查是否為「超級管理員」或所屬部門為「維修部」
 def is_repair_staff(user):
     if user.is_superuser:
         return True
     if hasattr(user, 'profile') and user.profile.department:
-        return user.profile.department.name == '報修部'
+        return user.profile.department.name == '維修部'
     return False
 
 # 檢視報修清單
 @login_required(login_url='login')
 def list(request):
     # 🔥 關鍵修改：將原本的 request.user.is_superuser 改成 is_repair_staff()
-    # 這樣超級管理員和「報修部」的人員，都能看到全公司所有的報修單
+    # 這樣超級管理員和「維修部」的人員，都能看到全公司所有的報修單
     if is_repair_staff(request.user):
         tickets = RepairTicket.objects.all().order_by('-created_at')
     else:
@@ -52,7 +52,7 @@ def create(request):
 def detail(request, pk):
     # 核心防護：如果不是報修部或管理員，直接踢回列表頁
     if not is_repair_staff(request.user):
-        messages.error(request, '❌ 權限不足：只有「報修部」人員與超級管理員可以查看報修單詳細內容。')
+        messages.error(request, '❌ 權限不足：只有「維修部」人員與超級管理員可以查看報修單詳細內容。')
         return redirect('ticket_list')
 
     ticket = get_object_or_404(RepairTicket, pk=pk)

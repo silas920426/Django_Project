@@ -5,8 +5,8 @@
     <div class="col-md-6">
         <div class="card shadow-sm mt-4">
             <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">🔍 檢視報修單詳細內容 (單號 #{{ ticket.id }})</h5>
-                <span class="badge bg-light text-dark">系統唯讀模式</span>
+                <h5 class="mb-0">查看報修單詳細內容 (單號 #{{ ticket.id }})</h5>
+                <span class="badge bg-light text-dark">只能觀看不能修改</span>
             </div>
             <div class="card-body">
                 
@@ -38,7 +38,7 @@
                         {% if ticket.status != 'completed' %}
                             <button type="submit" name="mark_processed" class="btn btn-success fw-bold" onclick="return confirm('確認此報修案件已維修完畢，並要將設備恢復為正常狀態嗎？');">✅ 標記為已處理</button>
                         {% else %}
-                            <span class="text-success fw-bold align-self-center">✨ 本單已處理完畢</span>
+                            <span class="text-success fw-bold align-self-center">處理完畢</span>
                         {% endif %}
                     </div>
                 </form>
